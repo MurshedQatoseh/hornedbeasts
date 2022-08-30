@@ -1,26 +1,52 @@
-
-
+import React from 'react';
 
 import Header from './component/Header';
+
 import Main from './component/Main';
+
+import SelectedBeast from './component/SelectedBeast'
+import data from './data.json'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function App() {
-  return (
-    <div className="App">
-      
 
-        <Header/>
-        
-        <Main/>
-        
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayModal: false,
+      databeasts: data,
+      selectedBeast: {}
+    }
+  }
+  showModal = (name) => {
 
+    const selectedBeast = data.find(beast => beast.title === name);
+    this.setState({selectedBeast, displayModal:true});
+  }
+  hideModal = () => {this.setState({displayModal: false});
+  }
+  presentBeasts = (databeasts) => {this.setState({databeasts});
+  }
+  render() {
+    return (
+      <div>
+        <Header />
+        
+        <Main 
+          showModal={this.showModal}
+          beasts={this.state.databeasts}
+          presentBeasts={this.presentBeasts} 
+        />
+        <SelectedBeast 
+          displayModal={this.state.displayModal}
+          hideModal={this.hideModal}
+          selectedBeast={this.state.selectedBeast}
+        />
        
-        
-     
-    </div>
-  );
+      </div> 
+    )
+  }
 }
 
 export default App;
